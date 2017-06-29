@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Aaron's Calculator</title>
+    <link rel="stylesheet" href="main.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+  </head>
+
+  <body>
+    <main>
+      <div class="calc-background text-center">
+        <div class="container-fluid">
+          <div class="row">
+            <!--DISPLAY START -->
+            <div id="viewer" class="col-xs-offset-1 text-left">
+              <span id="steps">0</span>
+            </div>
+            <!--DISPLAY END -->
+          </div><br><br>
+
+          <!--BUTTONS START -->
+          <div id='buttons'>
+            <!--clear buttons, multiply and divide -->
+            <div class="row">
+              <button class='red col-xs-3' id='ac'>AC</button>
+              <button class='red col-xs-3' id='ce'>CE</button>
+              <button class="col-xs-3" id='/'>&divide;</button>
+              <button class="col-xs-3" id='*'>x</button>
+            </div>
+            <!--buttons 7-9 and subtract -->
+            <div class="row">
+              <button class="col-xs-3" id='7'>7</button>
+              <button class="col-xs-3" id='8'>8</button>
+              <button class="col-xs-3" id='9'>9</button>
+              <button class="col-xs-3" id='-'>-</button>
+            </div>
+            <!--buttons 4-6 and add -->
+            <div class="row">
+              <button class="col-xs-3" id='4'>4</button>
+              <button class="col-xs-3" id='5'>5</button>
+              <button class="col-xs-3" id='6'>6</button>
+              <button class="col-xs-3" id='+'>+</button>
+            </div>
+            <!--buttons 1-3 -->
+            <div class="row">
+              <button class="col-xs-3" id='1'>1</button>
+              <button class="col-xs-3" id='2'>2</button>
+              <button class="col-xs-3" id='3'>3</button>
+            </div>
+            <!--buttons 0, decimal, and equals -->
+            <div class="row">
+              <button id='zeroButton' class="col-xs-6">0</button>
+              <button class="col-xs-3" id='.'>.</button>
+              <button id='equalButton' class="col-xs-3">=</button>
+            </div>
+        </div>
+        <!--BUTTONS END -->
+        </div>
+      </div>
+    </main>
+  </body>
+</html>
+
+<script>
+  $(document).ready(function() {
+    //stores inputs from user into an array
+    var inputs = [""];
+    //String to store current input string
+    var totalString;
+    //Validation array without the .
+    var operators1 = ["+", "-", "/", "*"];
+    //Validation array with the .
+    var operators2 = ["."];
+    //numbers for validation
+    var nums = [0,1,2,3,4,5,6,7,8,9];
+
+    function getValue(input) {
+      if (operators2.includes(inputs[inputs.length-1]===true && input === ".")){
+        console.log("Duplicate '.' ");
+      }
+      else if (inputs.length===1 && operators1.includes(input)===false){
+        inputs.push(input);
+      }
+      else if (operators1.includes(inputs[input.length-1])===false) {
+        inputs.push(input);
+      }
+      else if (nums.includes(Number(input))){
+        inputs.push(input);
+      }
+      update();
+    }
+    function update() {
+      totalString = inputs.join("");
+      $("#steps").html(totalString);
+    }
+    function getTotal() {
+      totalString = inputs.join("");
+      $("#steps").html(eval(totalString));
+    }
+
+    $("button").on("click", function() {
+      if (this.id === "ac") {
+        inputs = [""];
+        update();
+        $("#steps").html("0");
+      }
+      else if (this.id === "ce") {
+        inputs.pop();
+        update();
+      }
+      else if (this.id === "equalButton") {
+        getTotal();
+      }
+      else {
+        if (inputs[inputs.length-1].indexOf("+","-","/","*") === -1) {
+          getValue(this.id);
+        }
+        else {
+          getValue(this.id);
+        }
+      }
+    });
+  });
+</script>

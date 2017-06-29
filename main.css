@@ -1,0 +1,65 @@
+html, body, main {
+  background-color: black;
+}
+.calc-background {
+  position: absolute;
+  margin: auto;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 500px;
+  width: 345px;
+  background-color: #D2B887;
+  border-radius: 5px;
+  box-shadow: 5px 5px 5px #888888;
+}
+#viewer {
+  width: 85%;
+  height: 65px;
+  margin-left: auto;
+  margin-right: auto;
+  border: 2px solid #b4b39d;
+  border-radius: 6px;
+  background-color: #c3c2ab;
+}
+#steps {
+  font-size: 2em;
+  padding: 10px;
+}
+#buttons {
+  font-size: 16px;
+  font-weight: bold;
+  color: #fff;
+  display: inline-block;
+  width: 280px;
+  height: auto;
+  margin-top: 15px;
+  margin-left: 6px;
+}
+button {
+  border-radius: 8px;
+  border: none;
+  background-color: #3a3a3a;
+  margin: 0 4px 10px 8px;
+  height: 40px;
+  width: 50px;
+  box-shadow: 0px 3px 0px 0px #222121, inset -1px -3px 10px 1px #515151;
+}
+
+button:active {
+  transform: translate(0px, 3px);
+  box-shadow: none;
+}
+.row {
+  margin-top: 20px;
+}
+.red {
+  font-size: 14px;
+  background-color: #a72d45;
+  box-shadow: 0px 3px 0px 0px #671c2a;
+}
+#equalButton {
+  margin-top: -60px;
+  height: 100px;
+}
