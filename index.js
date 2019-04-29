@@ -21,7 +21,7 @@ $(document).ready(function() {
     } else if (this.id === 'ce') {
       inputs.pop();
       update();
-    } else if (this.id === 'equalButton') {
+    } else if (this.id === 'equals') {
       getTotal();
     } else {
       if (inputs[inputs.length - 1].indexOf('+', '-', '/', '*', '.') === -1) {
