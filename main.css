@@ -1,4 +1,6 @@
-html, body, main {
+html,
+body,
+main {
   background-color: black;
 }
 .calc-background {
@@ -10,7 +12,7 @@ html, body, main {
   left: 0;
   height: 500px;
   width: 345px;
-  background-color: #D2B887;
+  background-color: #d2b887;
   border-radius: 5px;
   box-shadow: 5px 5px 5px #888888;
 }
@@ -60,7 +62,7 @@ button:active {
   background-color: #a72d45;
   box-shadow: 0px 3px 0px 0px #671c2a;
 }
-#equalButton {
+#equals {
   margin-top: -60px;
   height: 100px;
 }
