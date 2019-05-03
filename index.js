@@ -1,107 +1,92 @@
+const btnValues = {
+  zero: 0,
+  one: 1,
+  two: 2,
+  three: 3,
+  four: 4,
+  five: 5,
+  six: 6,
+  seven: 7,
+  eight: 8,
+  nine: 9,
+  add: '+',
+  subtract: '-',
+  multiply: '*',
+  divide: '/',
+  decimal: '.',
+};
+
+const initialState = {
+  inputs: [],
+  currentInput: '',
+  update: function(newState) {
+    for (const key in newState) {
+      if (key !== 'update' && newState[key] !== undefined) {
+        this[key] = newState[key];
+      }
+    }
+    $('#steps').text(this.inputs.join('') + this.currentInput || '0');
+  },
+};
+
 $(document).ready(function() {
-  //stores inputs from user into an array
-  var inputs = [''];
-  //String to store current input string
-  var totalString;
-  //Validation array for normal arithmetic operators
-  var operators1 = ['+', '-', '/', '*'];
-  //Validation array for decimals
-  var operators2 = ['.'];
-  //numbers for validation
-  var nums = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
-  //counts decimals to prevent repition
-  var decCount = 0;
+  const state = { ...initialState };
 
   $('button').on('click', function() {
-    if (this.id === 'ac') {
-      inputs = [''];
-      decCount = 0;
-      update();
-      $('#steps').html('0');
-    } else if (this.id === 'ce') {
-      inputs.pop();
-      update();
-    } else if (this.id === 'equals') {
-      getTotal();
-    } else {
-      if (inputs[inputs.length - 1].indexOf('+', '-', '/', '*', '.') === -1) {
-        getValue(this.id);
-      } else {
-        getValue(this.id);
-      }
+    const { currentInput, inputs } = state;
+
+    switch (this.id) {
+      case 'clear':
+        return state.update({ ...initialState });
+      case 'ce':
+        if (currentInput) {
+          return state.update({
+            currentInput: currentInput
+              .split('')
+              .slice(0, currentInput.length - 1)
+              .join(''),
+          });
+        }
+      case 'equals':
+        const answer = eval([...inputs, currentInput].join(''));
+        return state.update({ inputs: [], currentInput: answer.toString() });
+      default:
+        return getValue(btnValues[this.id]);
     }
   });
 
-  function getValue(input) {
-    if (
-      operators2.includes(inputs[inputs.length - 1]) === true &&
-      input === '.'
-    ) {
-      //checks if last & current input are a '.'
-      alert("Duplicate '.' ");
-    } else if (
-      operators1.includes(inputs[inputs.length - 1]) === true &&
-      operators1.includes(input)
-    ) {
-      //checks if last & current input are a +,-,/,*
-      alert('Duplicate operator');
-    } else if (inputs.length === 1 && operators1.includes(input) === true) {
-      //stops user from starting with +,-,/,*
-      $('#steps').html("You can't start with an operator!");
-      return;
-    } else if (inputs.length === 1 && operators1.includes(input) === false) {
-      // pushes first input if not +,-,/,*
-      if (operators2.includes(input)) {
-        //if input in decimal,increments decimal count
-        decCount++;
-      }
-      if (decCount <= 1) {
-        inputs.push(input);
-      }
-    } else if (operators2.includes(input)) {
-      //if input in decimal, pushes input and increments decimal count
-      decCount++;
-      if (decCount <= 1) {
-        inputs.push(input);
-      }
-    } else if (
-      operators1.includes(inputs[inputs.length - 1]) === false &&
-      operators1.includes(input) === false
-    ) {
-      //if last value is not +,-,/,* and neither is current, push input
-      inputs.push(input);
-    } else if (
-      operators1.includes(inputs[inputs.length - 1]) === false &&
-      operators1.includes(input) === true
-    ) {
-      //if last value is not +,-,/,* but current is, push input
-      inputs.push(input);
-      decCount = 0;
-    } else if (nums.includes(Number(input))) {
-      //if value of input is in nums, push input
-      inputs.push(input);
+  function getValue(inputValue) {
+    const { inputs, currentInput } = state;
+    if (currentInput == 0 && inputValue === 0) {
+      return state.update({ currentInput: '0' });
     }
-    update();
-  }
-  function update() {
-    if (decCount > 1) {
-      alert("Duplicate '.' ");
-      return;
-    } else {
-      totalString = inputs.join('');
-      if (inputs.length === 0) {
-        inputs = [''];
-        $('#steps').html('0');
+
+    const operatorsRegex = /\+|-|\*|\//;
+
+    //if button clicked is an operator
+    if (operatorsRegex.test(inputValue)) {
+      //boolean check is last item in inputs array is an operator
+      const lastIsOperator = operatorsRegex.test([...inputs].pop());
+
+      if (!currentInput && !lastIsOperator) {
+        return;
+      } else if (!currentInput && lastIsOperator) {
+        //switches operator if 2 are clicked in a row
+        state.update({
+          inputs: [...inputs.slice(0, inputs.length - 1), inputValue],
+        });
       } else {
-        $('#steps').html(totalString);
+        return state.update({
+          inputs: [...inputs, !!currentInput ? currentInput : '', inputValue],
+          currentInput: '',
+        });
       }
     }
-    console.log(decCount);
-  }
-  function getTotal() {
-    totalString = inputs.join('');
-    var tot = eval(totalString);
-    $('#steps').html(eval(tot));
-    inputs = ['', tot.toString()];
+
+    const newString = currentInput + inputValue;
+    //ensures only one decimal in expressions
+    if (/^\d*\.?\d*$/.test(newString)) {
+      return state.update({ currentInput: newString });
+    }
   }
 });
