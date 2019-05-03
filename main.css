@@ -1,7 +1,10 @@
+@import url('https://fonts.googleapis.com/css?family=Audiowide');
+
 html,
 body,
 main {
   background-color: black;
+  font-family: 'Audiowide', cursive;
 }
 .calc-background {
   position: absolute;
@@ -44,7 +47,6 @@ button {
   border-radius: 8px;
   border: none;
   background-color: #3a3a3a;
-  margin: 0 4px 10px 8px;
   height: 40px;
   width: 50px;
   box-shadow: 0px 3px 0px 0px #222121, inset -1px -3px 10px 1px #515151;
