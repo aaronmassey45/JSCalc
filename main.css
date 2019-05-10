@@ -27,6 +27,7 @@ main {
   border: 2px solid #b4b39d;
   border-radius: 6px;
   background-color: #c3c2ab;
+  overflow: hidden;
 }
 #steps {
   font-size: 2em;
